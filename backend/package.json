@@ -1,0 +1,32 @@
+{
+    "name": "backend",
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "nodemon src/index.js",
+        "start": "node src/index.js",
+        "dev:auth": "cd src/services/auth-service && npm run dev",
+        "dev:user": "cd src/services/user-service && npm run dev",
+        "dev:course": "cd src/services/course-service && npm run dev",
+        "dev:blog": "cd src/services/blog-service && npm run dev",
+        "dev:enrollment": "cd src/services/enrollment-service && npm run dev",
+        "dev:learning-path": "cd src/services/learning-path-service && npm run dev",
+        "dev:gateway": "cd src/api-gateway && npm run dev",
+        "dev:microservices": "concurrently \"npm run dev:auth\" \"npm run dev:user\" \"npm run dev:course\" \"npm run dev:blog\" \"npm run dev:enrollment\" \"npm run dev:learning-path\" \"npm run dev:gateway\"",
+        "install:all": "npm install && cd src/services/auth-service && npm install && cd ../../api-gateway && npm install"
+    },
+    "dependencies": {
+        "express": "^4.18.2",
+        "mongoose": "^7.6.3",
+        "cors": "^2.8.5",
+        "dotenv": "^16.3.1",
+        "jsonwebtoken": "^9.0.2",
+        "bcryptjs": "^2.4.3",
+        "joi": "^17.11.0",
+        "slugify": "^1.6.6"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.1",
+        "concurrently": "^8.2.2"
+    }
+}

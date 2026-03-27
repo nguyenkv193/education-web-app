@@ -1,0 +1,467 @@
+@import url('https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Momo+Trust+Display&family=Momo+Trust+Sans:wght@200..800&display=swap');
+@import 'tailwindcss';
+
+html {
+    color: #292929;
+    font-family: 'Momo Trust Sans', sans-serif;
+    scroll-behavior: smooth;
+}
+
+.vip-border {
+    background: linear-gradient(180deg, #ffd900, #b45264 93.68%);
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slideOutDown {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+}
+
+.modal-enter {
+    animation: slideInUp 0.3s ease-out;
+}
+
+.modal-exit {
+    animation: slideOutDown 0.3s ease-out;
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.animate-fadeOut {
+    animation: fadeOut 0.3s ease-out;
+}
+
+.ql-container {
+    min-height: 400px;
+    font-size: 14px;
+    border: none !important;
+}
+
+.ql-toolbar.ql-snow {
+    font-family: inherit !important;
+    border: none !important;
+    border-bottom: 1px solid #dae4f0 !important;
+}
+
+.ql-container.ql-snow {
+    font-family: inherit;
+    border: none !important;
+}
+
+.ql-editor {
+    min-height: 400px;
+    font-size: 14px;
+}
+
+.ql-editor.ql-blank::before {
+    font-style: normal !important;
+    color: #9ca3af;
+}
+
+.quill-wrapper {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid #dae4f0;
+}
+
+/* Custom Scrollbar Styles - Always Visible */
+* {
+    scrollbar-width: auto;
+    scrollbar-color: #94a3b8 #e2e8f0;
+}
+
+*::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+*::-webkit-scrollbar-track {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #94a3b8;
+    border-radius: 10px;
+    border: 3px solid #e2e8f0;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: #64748b;
+}
+
+/* Force scrollbar to always show */
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+/* Blog Content Styling */
+.blog-content {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: #1f2937;
+    word-wrap: break-word;
+}
+
+/* Paragraphs */
+.blog-content p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+/* Reduce margin for paragraphs that only contain br tags or are very short */
+.blog-content p:empty,
+.blog-content p br:only-child {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+}
+
+/* Consecutive paragraphs should have less spacing */
+.blog-content p + p {
+    margin-top: 0.5em;
+}
+
+/* Text Formatting */
+.blog-content strong {
+    font-weight: 700;
+    color: #111827;
+}
+
+.blog-content em {
+    font-style: italic;
+}
+
+.blog-content u {
+    text-decoration: underline;
+}
+
+.blog-content s {
+    text-decoration: line-through;
+}
+
+.blog-content a:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+/* Lists */
+.blog-content ul,
+.blog-content ol {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+    padding-left: 1.625em;
+}
+
+.blog-content ul {
+    list-style-type: disc;
+}
+
+.blog-content ol {
+    list-style-type: decimal;
+}
+
+.blog-content li {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    padding-left: 0.375em;
+}
+
+.blog-content ul ul,
+.blog-content ul ol,
+.blog-content ol ul,
+.blog-content ol ol {
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+}
+
+.blog-content ul ul {
+    list-style-type: circle;
+}
+
+.blog-content ul ul ul {
+    list-style-type: square;
+}
+
+/* Blockquotes */
+.blog-content blockquote {
+    margin: 1.5em 0;
+    padding: 0.8em 1.5em;
+    border-left: 4px solid #3b82f6;
+    background-color: #f0f9ff;
+    font-style: italic;
+    color: #1e40af;
+}
+
+.blog-content blockquote p {
+    margin: 0;
+}
+
+.blog-content blockquote p:first-child {
+    margin-top: 0;
+}
+
+.blog-content blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+/* Code Blocks */
+.blog-content pre {
+    margin: 1.5em 0;
+    padding: 1.25em;
+    background-color: #1f2937;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Quill code block container */
+.blog-content .ql-code-block-container {
+    margin: 1.5em 0;
+    background-color: #1f2937;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Quill code block styling */
+.blog-content .ql-code-block {
+    background-color: #1f2937 !important;
+    color: #e5e7eb !important;
+    padding: 1.25em !important;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    display: block;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.875rem;
+    line-height: 1.7;
+}
+
+.blog-content pre code {
+    background-color: transparent;
+    padding: 0;
+    color: #e5e7eb;
+    font-size: 0.875rem;
+    line-height: 1.7;
+}
+
+/* Inline code */
+.blog-content code {
+    background-color: #f3f4f6;
+    color: #dc2626;
+    padding: 0.2em 0.4em;
+    border-radius: 0.25rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+}
+
+/* Make sure inline code inside code blocks doesn't get the inline styling */
+.blog-content .ql-code-block code,
+.blog-content pre code {
+    background-color: transparent !important;
+    color: inherit !important;
+    padding: 0 !important;
+}
+
+/* Images */
+.blog-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 1.5em auto;
+    display: block;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Videos */
+.blog-content iframe {
+    max-width: 100%;
+    margin: 1.5em auto;
+    display: block;
+    border-radius: 0.5rem;
+}
+
+/* Horizontal Rules */
+.blog-content hr {
+    margin: 2em 0;
+    border: 0;
+    border-top: 2px solid #e5e7eb;
+}
+
+/* Tables */
+.blog-content table {
+    width: 100%;
+    margin: 1.5em 0;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+}
+
+.blog-content thead {
+    background-color: #f9fafb;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.blog-content th {
+    padding: 0.75em 1em;
+    text-align: left;
+    font-weight: 600;
+    color: #111827;
+}
+
+.blog-content td {
+    padding: 0.75em 1em;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.blog-content tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+/* Text Alignment */
+.blog-content .ql-align-center {
+    text-align: center;
+}
+
+.blog-content .ql-align-right {
+    text-align: right;
+}
+
+.blog-content .ql-align-justify {
+    text-align: justify;
+}
+
+/* Indentation */
+.blog-content .ql-indent-1 {
+    padding-left: 3em;
+}
+
+.blog-content .ql-indent-2 {
+    padding-left: 6em;
+}
+
+.blog-content .ql-indent-3 {
+    padding-left: 9em;
+}
+
+.blog-content .ql-indent-4 {
+    padding-left: 12em;
+}
+
+.blog-content .ql-indent-5 {
+    padding-left: 15em;
+}
+
+.blog-content .ql-indent-6 {
+    padding-left: 18em;
+}
+
+.blog-content .ql-indent-7 {
+    padding-left: 21em;
+}
+
+.blog-content .ql-indent-8 {
+    padding-left: 24em;
+}
+
+/* Font Sizes */
+.blog-content .ql-size-small {
+    font-size: 0.875rem;
+}
+
+.blog-content .ql-size-large {
+    font-size: 1.25rem;
+}
+
+.blog-content .ql-size-huge {
+    font-size: 1.5rem;
+}
+
+/* Subscript and Superscript */
+.blog-content sub {
+    vertical-align: sub;
+    font-size: 0.75em;
+}
+
+.blog-content sup {
+    vertical-align: super;
+    font-size: 0.75em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .blog-content {
+        font-size: 1rem;
+    }
+
+    .blog-content h1 {
+        font-size: 1.875rem;
+    }
+
+    .blog-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .blog-content h3 {
+        font-size: 1.25rem;
+    }
+
+    .blog-content h4 {
+        font-size: 1.125rem;
+    }
+
+    .blog-content pre {
+        padding: 1em;
+    }
+
+    .blog-content .ql-indent-1 {
+        padding-left: 2em;
+    }
+
+    .blog-content .ql-indent-2 {
+        padding-left: 4em;
+    }
+
+    .blog-content .ql-indent-3 {
+        padding-left: 6em;
+    }
+}

@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap");
+@import "tailwindcss";
+
+body {
+  color: #292929;
+  margin: 0;
+}
+
+.logo-font {
+  font-family: "Saira Stencil One", sans-serif;
+  font-weight: 400;
+}
+
+.vip-border {
+  background: linear-gradient(180deg, #ffd900, #b45264 93.68%);
+}
