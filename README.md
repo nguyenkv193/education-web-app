@@ -47,6 +47,11 @@ từ thư mục gốc.
 - Service communication: API Gateway và HTTP proxy.
 - Local infrastructure: Docker Compose cho MongoDB.
 
+## Tài liệu kỹ thuật
+
+Xem [thư mục docs](./docs/) để đọc tài liệu về [kiến trúc](./docs/architecture.md),
+[chạy local](./docs/local-development.md) và [API Gateway](./docs/api.md).
+
 ## Yêu cầu môi trường
 
 - Node.js `20.19+` hoặc `22.12+`.
