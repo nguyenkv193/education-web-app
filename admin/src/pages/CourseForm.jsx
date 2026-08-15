@@ -8,7 +8,6 @@ import {
     faSave,
     faTimes,
     faChevronLeft,
-    faImage,
 } from '@fortawesome/free-solid-svg-icons';
 
 export default function CourseForm() {

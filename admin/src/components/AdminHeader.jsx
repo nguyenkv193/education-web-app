@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faChevronDown, faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faChevronDown, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../contexts/AuthContext';
 
 const AdminHeader = () => {

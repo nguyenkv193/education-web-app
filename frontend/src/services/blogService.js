@@ -11,40 +11,6 @@ const getUserKey = (base) => {
   return `${base}_${id}`;
 };
 
-const migrateLegacyKey = (base) => {
-  // Move data from legacy base key (without user id) into current user's key if present
-  try {
-    const legacy = localStorage.getItem(base);
-    if (!legacy) return;
-    const parsed = JSON.parse(legacy || "[]");
-    if (!Array.isArray(parsed) || parsed.length === 0) return;
-
-    const user = authService.getUser();
-    const id = user?._id || user?.id || null;
-    if (!id) return; // do not migrate for guest
-
-    // Only migrate items that belong to current user (by matching post.author._id or post.author)
-    const toMigrate = parsed.filter((p) => {
-      const authorId = p?.author?._id || p?.author || null;
-      return authorId && String(authorId) === String(id);
-    });
-    if (toMigrate.length === 0) return;
-    const destKey = `${base}_${id}`;
-    const existing = JSON.parse(localStorage.getItem(destKey) || "[]");
-    const merged = [...existing, ...toMigrate];
-    localStorage.setItem(destKey, JSON.stringify(merged));
-    // Remove only the migrated items from legacy store
-    const remaining = parsed.filter((p) => !toMigrate.includes(p));
-    if (remaining.length > 0) {
-      localStorage.setItem(base, JSON.stringify(remaining));
-    } else {
-      localStorage.removeItem(base);
-    }
-  } catch (err) {
-    console.warn("Migration of legacy localStorage key failed", base, err);
-  }
-};
-
 const API = {
   createBlog: (payload) => httpClient.post("/api/blogs", payload),
   getPopular: (limit = 5) =>
@@ -82,20 +48,16 @@ const API = {
 
   // Save post to localStorage
   savePost: async (postId) => {
-    try {
-      const res = await httpClient.get(`/api/blogs/${postId}`);
-      const post = res.data?.data || res.data;
+    const res = await httpClient.get(`/api/blogs/${postId}`);
+    const post = res.data?.data || res.data;
 
-      const key = getUserKey(BASE_SAVED_KEY);
-      let savedIds = JSON.parse(localStorage.getItem(key) || "[]");
-      if (!savedIds.find((p) => p._id === postId)) {
-        savedIds.push(post);
-        localStorage.setItem(key, JSON.stringify(savedIds));
-      }
-      return res;
-    } catch (err) {
-      throw err;
+    const key = getUserKey(BASE_SAVED_KEY);
+    let savedIds = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!savedIds.find((p) => p._id === postId)) {
+      savedIds.push(post);
+      localStorage.setItem(key, JSON.stringify(savedIds));
     }
+    return res;
   },
 
   // Remove saved post

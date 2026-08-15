@@ -111,6 +111,8 @@ const Settings = () => {
                 github: user?.github || '',
                 avatar: user?.avatar || '',
             };
+            // The authenticated user is an external source for this local form state.
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setDisplayData(newData);
             setEditData(newData);
         }

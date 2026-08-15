@@ -19,7 +19,7 @@ const MyBlogPosts = () => {
     const [activeTab, setActiveTab] = useState('published'); // "published" or "draft"
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const { user, isAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuth();
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -62,7 +62,7 @@ const MyBlogPosts = () => {
                             if (apiPost) {
                                 return { ...post, views: apiPost.views || 0 };
                             }
-                        } catch (err) {
+                        } catch {
                             // If can't fetch, keep local data
                             console.log('Could not fetch post details from API');
                         }
@@ -87,7 +87,7 @@ const MyBlogPosts = () => {
             // Try to delete from API first (if it's published)
             try {
                 await blogService.deletePost(postId);
-            } catch (err) {
+            } catch {
                 console.log('Could not delete from API, deleting from localStorage');
             }
 

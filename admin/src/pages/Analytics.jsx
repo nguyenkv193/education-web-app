@@ -12,7 +12,6 @@ import {
 
 const Analytics = () => {
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   const approvePost = (id) => {
     // call API
@@ -43,7 +42,6 @@ const Analytics = () => {
 
   const fetchPending = async () => {
     try {
-      setLoading(true);
       const res = await import("../services/blogService").then((m) =>
         m.default.getPending()
       );
@@ -63,8 +61,6 @@ const Analytics = () => {
       setPosts(mapped);
     } catch (err) {
       console.error("Error fetching pending blogs", err);
-    } finally {
-      setLoading(false);
     }
   };
 

@@ -15,7 +15,6 @@ import {
     faBook,
     faVideo,
     faClock,
-    faArrowLeft,
     faChevronLeft,
 } from '@fortawesome/free-solid-svg-icons';
 

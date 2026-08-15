@@ -32,7 +32,7 @@ const authService = {
         try {
             const response = await httpClient.get('/auth/me');
             return response.data?.data;
-        } catch (error) {
+        } catch {
             return null;
         }
     }

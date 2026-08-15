@@ -129,7 +129,9 @@ const Header = () => {
                     });
                     return next;
                 });
-            } catch {}
+            } catch {
+                // Thumbnail loading is optional and should not block the header.
+            }
         };
 
         fetchThumbs();

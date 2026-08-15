@@ -50,7 +50,8 @@ từ thư mục gốc.
 ## Tài liệu kỹ thuật
 
 Xem [thư mục docs](./docs/) để đọc tài liệu về [kiến trúc](./docs/architecture.md),
-[chạy local](./docs/local-development.md) và [API Gateway](./docs/api.md).
+[chạy local](./docs/local-development.md), [API Gateway](./docs/api.md) và
+[CI/CD](./docs/ci-cd.md).
 
 ## Yêu cầu môi trường
 

@@ -6,46 +6,38 @@ const USER_KEY = "user";
 class AuthService {
   // Đăng ký tài khoản mới
   async register(fullName, email, password, confirmPassword) {
-    try {
-      const response = await httpClient.post("/api/auth/register", {
-        fullName,
-        email,
-        password,
-        confirmPassword,
-      });
+    const response = await httpClient.post("/api/auth/register", {
+      fullName,
+      email,
+      password,
+      confirmPassword,
+    });
 
-      if (response.data && response.data.data) {
-        const { user, token } = response.data.data;
-        this.saveToken(token);
-        this.saveUser(user);
-        return { user, token };
-      }
-
-      throw new Error("Invalid response from server");
-    } catch (error) {
-      throw error;
+    if (response.data && response.data.data) {
+      const { user, token } = response.data.data;
+      this.saveToken(token);
+      this.saveUser(user);
+      return { user, token };
     }
+
+    throw new Error("Invalid response from server");
   }
 
   // Đăng nhập
   async login(email, password) {
-    try {
-      const response = await httpClient.post("/api/auth/login", {
-        email,
-        password,
-      });
+    const response = await httpClient.post("/api/auth/login", {
+      email,
+      password,
+    });
 
-      if (response.data && response.data.data) {
-        const { user, token } = response.data.data;
-        this.saveToken(token);
-        this.saveUser(user);
-        return { user, token };
-      }
-
-      throw new Error("Invalid response from server");
-    } catch (error) {
-      throw error;
+    if (response.data && response.data.data) {
+      const { user, token } = response.data.data;
+      this.saveToken(token);
+      this.saveUser(user);
+      return { user, token };
     }
+
+    throw new Error("Invalid response from server");
   }
 
   // Đăng xuất
@@ -103,7 +95,7 @@ class AuthService {
     if (userStr) {
       try {
         return JSON.parse(userStr);
-      } catch (error) {
+      } catch {
         return null;
       }
     }
@@ -122,33 +114,25 @@ class AuthService {
 
   // Cập nhật profile người dùng
   async updateProfile(payload) {
-    try {
-      const response = await httpClient.put("/api/auth/me", payload);
-      if (response.data && response.data.data) {
-        const user = response.data.data;
-        this.saveUser(user);
-        return user;
-      }
-      throw new Error("Invalid response from server");
-    } catch (error) {
-      throw error;
+    const response = await httpClient.put("/api/auth/me", payload);
+    if (response.data && response.data.data) {
+      const user = response.data.data;
+      this.saveUser(user);
+      return user;
     }
+    throw new Error("Invalid response from server");
   }
 
   // Thay đổi mật khẩu
   async changePassword(currentPassword, newPassword) {
-    try {
-      const response = await httpClient.post("/api/auth/change-password", {
-        currentPassword,
-        newPassword,
-      });
-      if (response.data) {
-        return response.data;
-      }
-      throw new Error("Invalid response from server");
-    } catch (error) {
-      throw error;
+    const response = await httpClient.post("/api/auth/change-password", {
+      currentPassword,
+      newPassword,
+    });
+    if (response.data) {
+      return response.data;
     }
+    throw new Error("Invalid response from server");
   }
 }
 

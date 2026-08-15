@@ -282,7 +282,7 @@ export default function CourseLearn() {
 
     // Handle YouTube URLs
     const youtubeRegex =
-      /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+      /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/;
     const match = url.match(youtubeRegex);
 
     if (match && match[1]) {

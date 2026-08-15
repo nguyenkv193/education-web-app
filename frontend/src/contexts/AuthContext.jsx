@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect, useRef } from "react";
 import authService from "../services/authService";
 import httpClient from "../services/httpClient";
@@ -30,7 +31,7 @@ export const AuthProvider = ({ children }) => {
         try {
           const userData = await authService.getCurrentUser();
           setUser(userData);
-        } catch (err) {
+        } catch {
           // Token không hợp lệ, xóa và logout
           setUser(null);
           authService.removeToken();
@@ -50,7 +51,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
 
-      const { user: userData, token } = await authService.register(
+      const { user: userData } = await authService.register(
         fullName,
         email,
         password,
@@ -73,7 +74,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
 
-      const { user: userData, token } = await authService.login(
+      const { user: userData } = await authService.login(
         email,
         password
       );
@@ -166,7 +167,7 @@ export const AuthProvider = ({ children }) => {
       progressTimersRef.current[slug] = setTimeout(async () => {
         try {
           const payload = { slug, progress };
-          const res = await httpClient.post(
+          await httpClient.post(
             "/api/auth/enroll/progress",
             payload
           );

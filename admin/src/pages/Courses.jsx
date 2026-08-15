@@ -8,7 +8,6 @@ import {
     faEye,
     faSearch,
     faPlus,
-    faFilter,
     faChartLine,
     faDollarSign,
 } from '@fortawesome/free-solid-svg-icons';

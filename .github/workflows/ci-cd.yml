@@ -1,0 +1,207 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*.*.*'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-cd-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web:
+    name: ${{ matrix.app }} checks
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app:
+          - frontend
+          - admin
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.19.0'
+          cache: npm
+          cache-dependency-path: ${{ matrix.app }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ matrix.app }}
+        run: npm ci --no-audit --no-fund
+
+      - name: Lint
+        working-directory: ${{ matrix.app }}
+        run: npm run lint
+
+      - name: Build
+        working-directory: ${{ matrix.app }}
+        run: npm run build
+
+  backend:
+    name: ${{ matrix.package }} syntax check
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - backend
+          - backend/src/shared
+          - backend/src/api-gateway
+          - backend/src/services/auth-service
+          - backend/src/services/user-service
+          - backend/src/services/course-service
+          - backend/src/services/blog-service
+          - backend/src/services/enrollment-service
+          - backend/src/services/learning-path-service
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.19.0'
+          cache: npm
+          cache-dependency-path: ${{ matrix.package }}/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ${{ matrix.package }}
+        run: npm ci --no-audit --no-fund
+
+      - name: Check JavaScript syntax
+        working-directory: ${{ matrix.package }}
+        shell: bash
+        run: |
+          while IFS= read -r -d '' file; do
+            node --check "$file"
+          done < <(find . -type d -name node_modules -prune -o -type f -name '*.js' -print0)
+
+  compose:
+    name: Docker Compose validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Compose configuration
+        run: docker compose -f compose.yaml config --quiet
+
+  docker:
+    name: Docker build (${{ matrix.image }})
+    runs-on: ubuntu-latest
+    needs:
+      - web
+      - backend
+      - compose
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: api-gateway
+            context: backend
+            dockerfile: backend/src/api-gateway/Dockerfile
+          - image: auth-service
+            context: backend
+            dockerfile: backend/src/services/auth-service/Dockerfile
+          - image: user-service
+            context: backend
+            dockerfile: backend/src/services/user-service/Dockerfile
+          - image: course-service
+            context: backend
+            dockerfile: backend/src/services/course-service/Dockerfile
+          - image: blog-service
+            context: backend
+            dockerfile: backend/src/services/blog-service/Dockerfile
+          - image: enrollment-service
+            context: backend
+            dockerfile: backend/src/services/enrollment-service/Dockerfile
+          - image: learning-path-service
+            context: backend
+            dockerfile: backend/src/services/learning-path-service/Dockerfile
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build image
+        run: >-
+          docker build --pull
+          --file "${{ matrix.dockerfile }}"
+          --tag "f8-education/${{ matrix.image }}:${{ github.sha }}"
+          "${{ matrix.context }}"
+
+  publish:
+    name: Publish ${{ matrix.image }}
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    needs:
+      - docker
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: api-gateway
+            context: backend
+            dockerfile: backend/src/api-gateway/Dockerfile
+          - image: auth-service
+            context: backend
+            dockerfile: backend/src/services/auth-service/Dockerfile
+          - image: user-service
+            context: backend
+            dockerfile: backend/src/services/user-service/Dockerfile
+          - image: course-service
+            context: backend
+            dockerfile: backend/src/services/course-service/Dockerfile
+          - image: blog-service
+            context: backend
+            dockerfile: backend/src/services/blog-service/Dockerfile
+          - image: enrollment-service
+            context: backend
+            dockerfile: backend/src/services/enrollment-service/Dockerfile
+          - image: learning-path-service
+            context: backend
+            dockerfile: backend/src/services/learning-path-service/Dockerfile
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/f8-education-${{ matrix.image }}
+          tags: |
+            type=raw,value=${{ github.ref_name }}
+            type=sha
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
