@@ -63,6 +63,22 @@ Xem [thư mục docs](./docs/) để đọc tài liệu về [kiến trúc](./do
 
 ### 1. Cài dependencies
 
+Có thể dùng script setup tự động để tạo `.env`, cài dependencies và khởi động
+MongoDB:
+
+```powershell
+.\scripts\setup.ps1
+```
+
+Hoặc trên Linux/macOS:
+
+```bash
+chmod +x scripts/setup.sh
+./scripts/setup.sh
+```
+
+Nếu muốn thực hiện thủ công, chạy:
+
 ```bash
 make install
 ```

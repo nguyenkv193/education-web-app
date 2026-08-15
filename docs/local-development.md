@@ -9,6 +9,27 @@
 
 ## Cài đặt
 
+Có thể dùng script setup tự động:
+
+```powershell
+.\scripts\setup.ps1
+```
+
+Nếu đã cài dependencies hoặc không muốn khởi động MongoDB:
+
+```powershell
+.\scripts\setup.ps1 -SkipInstall -SkipMongoDB
+```
+
+Trên Linux/macOS:
+
+```bash
+chmod +x scripts/setup.sh
+./scripts/setup.sh
+```
+
+Script chỉ tạo `.env` khi file đích chưa tồn tại và không ghi đè cấu hình local.
+
 Từ thư mục root:
 
 ```powershell
